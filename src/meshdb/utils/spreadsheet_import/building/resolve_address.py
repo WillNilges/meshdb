@@ -11,8 +11,6 @@ from meshapi.exceptions import AddressError
 from meshdb.utils.spreadsheet_import.building.constants import (
     INVALID_BIN_NUMBERS,
     LOCAL_MESH_NOMINATIM_ADDR,
-    NYC_BIN_LOOKUP_PREFIX,
-    NYC_BIN_LOOKUP_UA,
     NYC_COUNTIES,
     OSM_CITY_SUBSTITUTIONS,
     AddressParsingResult,
@@ -67,13 +65,15 @@ def convert_osm_city_village_suburb_nonsense(osm_raw_addr: dict) -> Tuple[str, s
         )
 
     return (
-        osm_raw_addr["city"]
-        if "city" in osm_raw_addr
-        else osm_raw_addr["town"]
-        if "town" in osm_raw_addr
-        else osm_raw_addr["village"]
-        if "village" in osm_raw_addr
-        else None,
+        (
+            osm_raw_addr["city"]
+            if "city" in osm_raw_addr
+            else (
+                osm_raw_addr["town"]
+                if "town" in osm_raw_addr
+                else osm_raw_addr["village"] if "village" in osm_raw_addr else None
+            )
+        ),
         osm_raw_addr["ISO3166-2-lvl4"].split("-")[1] if "ISO3166-2-lvl4" in osm_raw_addr else None,
     )
 
@@ -227,7 +227,7 @@ class AddressParser:
 
         # Empirically, the /autocomplete endpoint performs better than the /search endpoint
         # (don't ask me why)
-        nyc_planning_req = requests.get(f"https://geosearch.planninglabs.nyc/v2/autocomplete", params=query_params)
+        nyc_planning_req = requests.get("https://geosearch.planninglabs.nyc/v2/autocomplete", params=query_params)
         nyc_planning_resp = nyc_planning_req.json()
 
         closest_nyc_location = None
