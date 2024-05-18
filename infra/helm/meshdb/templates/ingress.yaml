@@ -1,0 +1,16 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: meshdb-nginx-ingress
+  namespace: {{ .Values.meshdb_app_namespace }}
+spec:
+  rules:
+  - http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: meshdb-nginx
+            port:
+              number: 80
