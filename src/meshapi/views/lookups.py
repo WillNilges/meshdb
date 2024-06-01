@@ -39,7 +39,7 @@ class FilterRequiredListAPIView(generics.ListAPIView):
 class MemberFilter(filters.FilterSet):
     name = filters.CharFilter(field_name="name", lookup_expr="icontains")
     email_address = filters.CharFilter(method="filter_on_all_emails")
-    phone_number = filters.CharFilter(field_name="phone_number", lookup_expr="icontains")
+    phone_number = filters.CharFilter(method="filter_on_all_phone_numbers")
 
     def filter_on_all_emails(self, queryset, name, value):
         return queryset.filter(
@@ -47,6 +47,9 @@ class MemberFilter(filters.FilterSet):
             | Q(stripe_email_address__icontains=value)
             | Q(additional_email_addresses__icontains=value)
         )
+
+    def filter_on_all_phone_numbers(self, queryset, name, value):
+        return queryset.filter(Q(phone_number__icontains=value) | Q(additional_phone_numbers__icontains=value))
 
     class Meta:
         model = Member
@@ -76,7 +79,7 @@ class MemberFilter(filters.FilterSet):
                 "phone_number",
                 OpenApiTypes.STR,
                 OpenApiParameter.QUERY,
-                description="Filter members by the phone_number field using case-insensitve substring matching",
+                description="Filter members by any of the phone number fields using case-insensitve substring matching",
                 required=False,
             ),
         ],

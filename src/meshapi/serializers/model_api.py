@@ -22,6 +22,7 @@ class MemberSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
     all_email_addresses = serializers.ReadOnlyField()
+    all_phone_numbers = serializers.ReadOnlyField()
     installs = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
 
 
