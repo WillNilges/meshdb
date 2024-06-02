@@ -1,5 +1,6 @@
 from django.contrib import admin
 from django.contrib.admin.options import forms
+from import_export.admin import ExportActionMixin, ImportExportModelAdmin
 
 from meshapi.admin.inlines import InstallInline
 from meshapi.models import Member
@@ -18,7 +19,7 @@ class MemberAdminForm(forms.ModelForm):
 
 
 @admin.register(Member)
-class MemberAdmin(admin.ModelAdmin):
+class MemberAdmin(ImportExportModelAdmin, ExportActionMixin):
     form = MemberAdminForm
     search_fields = [
         # Search by name

@@ -1,5 +1,6 @@
 from django.contrib import admin
 from django.contrib.admin.options import forms
+from import_export.admin import ExportActionMixin, ImportExportModelAdmin
 
 from meshapi.admin.admin import device_fieldsets
 from meshapi.admin.inlines import DeviceLinkInline
@@ -17,7 +18,7 @@ class DeviceAdminForm(forms.ModelForm):
 
 
 @admin.register(Device)
-class DeviceAdmin(admin.ModelAdmin):
+class DeviceAdmin(ImportExportModelAdmin, ExportActionMixin):
     form = DeviceAdminForm
     search_fields = ["name__icontains", "model__icontains", "ssid__icontains", "notes__icontains"]
     list_display = [
