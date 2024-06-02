@@ -1,0 +1,14 @@
+{% load i18n static %}
+<div class="related-widget-wrapper">
+    {% include "django/forms/widgets/input.html" %}
+    {% block links %}
+    {% spaceless %}
+    <a class="related-widget-wrapper-link view-related"
+{#         href="#"#}
+
+         title="Auto-fill from {{ auto_populate_source }}">
+        <img src="{% static 'admin/map_magnify.png' %}" alt="Auto-fill from {{ auto_populate_source }}">
+      </a>
+    {% endspaceless %}
+    {% endblock %}
+</div>

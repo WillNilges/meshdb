@@ -45,3 +45,21 @@ class PanoramaViewer(JSONFormWidget):
 
 class DeviceIPAddressWidget(widgets.TextInput):
     template_name = "widgets/ip_address.html"
+
+
+class AutoPopulatingGeoCoordinateField(widgets.TextInput):
+    template_name = "widgets/auto_populating_geo_coord.html"
+
+    class Media:
+        css = {
+            "all": ("widgets/auto_populating_geo_coord.css",),
+        }
+
+    def __init__(self, source: str, attrs: dict = None):
+        super().__init__(attrs)
+        self.source = source
+
+    def get_context(self, name: str, value: str, attrs: dict):
+        context = super().get_context(name, value, attrs)
+        context["auto_populate_source"] = self.source
+        return context

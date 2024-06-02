@@ -4,7 +4,7 @@ from django.contrib.admin.options import forms
 from meshapi.admin.admin import device_fieldsets
 from meshapi.admin.inlines import DeviceLinkInline
 from meshapi.models import Device
-from meshapi.widgets import DeviceIPAddressWidget
+from meshapi.widgets import AutoPopulatingGeoCoordinateField, DeviceIPAddressWidget
 
 
 class DeviceAdminForm(forms.ModelForm):
@@ -12,6 +12,9 @@ class DeviceAdminForm(forms.ModelForm):
         model = Device
         fields = "__all__"
         widgets = {
+            "latitude": AutoPopulatingGeoCoordinateField("Node"),
+            "longitude": AutoPopulatingGeoCoordinateField("Node"),
+            "altitude": AutoPopulatingGeoCoordinateField("Node"),
             "ip_address": DeviceIPAddressWidget(),
         }
 
