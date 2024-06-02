@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.contrib.admin.options import forms
 
-from meshapi.admin.inlines import InstallInline
+from meshapi.admin.inlines import InstallInlineMemberPage
 from meshapi.models import Member
 
 
@@ -84,4 +84,4 @@ class MemberAdmin(admin.ModelAdmin):
             },
         ),
     ]
-    inlines = [InstallInline]
+    inlines = [InstallInlineMemberPage]
