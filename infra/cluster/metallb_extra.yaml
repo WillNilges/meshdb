@@ -1,0 +1,17 @@
+apiVersion: metallb.io/v1beta1
+kind: IPAddressPool
+metadata:
+  name: pool-1
+  namespace: metallb-system
+spec:
+  addresses:
+  - "METALLB_ADDR_RANGE"
+---
+apiVersion: metallb.io/v1beta1
+kind: L2Advertisement
+metadata:
+  name: k3s-l2
+  namespace: metallb-system
+spec:
+  ipAddressPools:
+  - pool-1
