@@ -1,5 +1,7 @@
 from django.contrib import admin
 from django.contrib.admin.options import forms
+from import_export import resources
+from import_export.admin import ExportActionMixin, ImportExportModelAdmin
 
 from meshapi.admin.inlines import (
     BuildingMembershipInline,
@@ -17,6 +19,17 @@ admin.site.site_title = "MeshDB Admin Portal"
 admin.site.index_title = "Welcome to MeshDB Admin Portal"
 
 
+class NodeImportExportResource(resources.ModelResource):
+    def before_import(self, dataset, **kwargs):
+        if "network_number" not in dataset.headers:
+            dataset.headers.append("network_number")
+        super().before_import(dataset, **kwargs)
+
+    class Meta:
+        model = Node
+        import_id_fields = ("network_number",)
+
+
 class NodeAdminForm(forms.ModelForm):
     class Meta:
         model = Node
@@ -24,8 +37,9 @@ class NodeAdminForm(forms.ModelForm):
 
 
 @admin.register(Node)
-class NodeAdmin(admin.ModelAdmin):
+class NodeAdmin(ImportExportModelAdmin, ExportActionMixin):
     form = NodeAdminForm
+    resource_classes = [NodeImportExportResource]
     search_fields = [
         "network_number__iexact",
         "name__icontains",
