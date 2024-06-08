@@ -1,8 +1,6 @@
-resource "proxmox_vm_qemu" "meshdbnode" {
-  count = 3
-
-  name        = "meshdb${var.meshdb_env_name}node${count.index}"
-  desc        = "node ${count.index} for meshdb ${var.meshdb_env_name}"
+resource "proxmox_vm_qemu" "k8s-lb" {
+  name        = "k8s-lb"
+  desc        = "router and lb for k8s"
   target_node = var.meshdb_proxmox_node
 
   clone = var.meshdb_proxmox_template_image
@@ -23,7 +21,7 @@ resource "proxmox_vm_qemu" "meshdbnode" {
       scsi0 {
         disk {
           backup = false
-          size = 50
+          size = 10
           storage = var.meshdb_proxmox_storage_location
 
         }
@@ -36,7 +34,7 @@ resource "proxmox_vm_qemu" "meshdbnode" {
     model = "virtio"
   }
 
-  ipconfig0 = "ip=${var.meshdb_ips[count.index]}/${var.meshdb_networkrange},gw=${var.meshdb_gateway}"
+  ipconfig0 = "ip=${var.meshdb_lb_ip}/${var.meshdb_networkrange},gw=${var.meshdb_gateway}"
 
   ssh_user = "root"
   ssh_private_key = file("${path.module}/meshdb${var.meshdb_env_name}")
