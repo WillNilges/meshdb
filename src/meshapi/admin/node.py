@@ -4,7 +4,7 @@ from django.contrib.admin.options import forms
 from meshapi.admin.inlines import (
     BuildingMembershipInline,
     DeviceInline,
-    InstallInline,
+    InstallInlineNodePage,
     NodeLinkInline,
     NonrelatedBuildingInline,
     PanoramaInline,
@@ -75,7 +75,7 @@ class NodeAdmin(admin.ModelAdmin):
     ]
     inlines = [
         PanoramaInline,
-        InstallInline,
+        InstallInlineNodePage,
         NonrelatedBuildingInline,
         BuildingMembershipInline,
         DeviceInline,

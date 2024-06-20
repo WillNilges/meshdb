@@ -69,6 +69,7 @@ class NonrelatedBuildingInline(BetterNonrelatedInline):
     readonly_fields = fields
 
     add_button = True
+    reverse_relation = "primary_node"
 
     # Hack to get the NN
     network_number = None
@@ -135,3 +136,20 @@ class InstallInline(BetterInline):
     model = Install
     fields = ["status", "node", "member", "building", "unit"]
     readonly_fields = fields
+
+
+class InstallInlineNodePage(InstallInline):
+    add_button = True
+    reverse_relation = "primary_node"
+    bulk_add_button = True
+
+
+class InstallInlineBuildingPage(InstallInline):
+    add_button = True
+    reverse_relation = "building"
+    bulk_add_button = True
+
+
+class InstallInlineMemberPage(InstallInline):
+    add_button = True
+    reverse_relation = "member"

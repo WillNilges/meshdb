@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.contrib.admin.options import forms
 from django.utils.safestring import mark_safe
 
-from meshapi.admin.inlines import InstallInline
+from meshapi.admin.inlines import InstallInlineBuildingPage
 from meshapi.models import Building
 from meshapi.widgets import PanoramaViewer
 
@@ -114,7 +114,7 @@ class BuildingAdmin(admin.ModelAdmin):
             },
         ),
     ]
-    inlines = [InstallInline]
+    inlines = [InstallInlineBuildingPage]
     filter_horizontal = ("nodes",)
 
     # This is probably a bad idea because you'll have to load a million panos
