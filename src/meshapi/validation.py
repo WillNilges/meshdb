@@ -4,6 +4,7 @@ from dataclasses import dataclass
 
 import phonenumbers
 import requests
+from django.core.exceptions import ValidationError
 from validate_email import validate_email
 
 from meshapi.exceptions import AddressAPIError, AddressError, OpenDataAPIError
@@ -32,6 +33,11 @@ def validate_phone_number(phone_number: str) -> bool:
     except phonenumbers.NumberParseException:
         return False
     return True
+
+
+def validate_phone_number_field(phone_number: str):
+    if not validate_phone_number(phone_number):
+        raise ValidationError(f"Invalid phone number: {phone_number}")
 
 
 # Used to obtain info about addresses within NYC. Uses a pair of APIs
